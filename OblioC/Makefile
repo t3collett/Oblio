@@ -1,6 +1,6 @@
 CC= gcc
 CXX_DEBUG_FLAGS=-g
-
+CXX_FLAGS= -Wall
 BIN_PATH=./bin/
 BLD_PATH=./build/
 SRC_PATH=./src/
@@ -18,10 +18,10 @@ all: $(EXEC)
 
 	
 $(EXEC): $(BIN_PATH) $(OBJECTS)
-	$(CC) -o $(EXEC) $(OBJECTS)
+	$(CC)  $(OBJECTS) -o $(EXEC)
 
 $(BLD_PATH)%.o: $(SRC_PATH)%.c $(BLD_PATH)
-	$(CC) -c $< -o $@
+	$(CC) -c $(CXX_FLAGS) $< -o $@ 
 
 $(BIN_PATH) : 
 	@umask 0; mkdir -p "$(BIN_PATH)"
@@ -32,8 +32,8 @@ $(BLD_PATH) :
 clean :
 	@rm -rf "$(BIN_PATH)" "$(BLD_PATH)"
 
-debug : $(BIN_PATH) $(SOURCES)
-	$(CC) -o $(DEBUG_TARGET) $(SOURCES) $(CXX_DEBUG_FLAGS)
+debug : CXX_FLAGS+=$(CXX_DEBUG_FLAGS)
+debug : $(EXEC)
 
 run : $(EXEC)
 	$(EXEC)

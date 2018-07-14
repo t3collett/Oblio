@@ -1,6 +1,6 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "oblio_game.h"
 #include "oblio_view.h"
 #include "oblio_strings.h"
@@ -19,6 +19,18 @@ void print_game_status(oblio_game game){
 	return;
 }
 
+void print_turn_prompt(){
+	printf("\nEnter 4 digits: ");
+	return;
+}
+void print_input_error(short number_of_digits){
+	printf(INPUT_ERROR,number_of_digits);
+	return;
+}
+void print_goodbye(){
+	printf("\nThanks for playing. Goodbye!\n");
+}
+
 void print_turn_results(oblio_game game){
 	printf("\nNumber of turns left: %u", game.turns_left);
 	printf("\nNumber Correct: %u", game.correct);
@@ -26,12 +38,18 @@ void print_turn_results(oblio_game game){
 }
 
 void print_game_results(oblio_game game) {
+	char plural;
 	if (game.turns_left <= 0) { 
 		printf("\nYou Lose!");
 	} else {
 		printf("\nYou Win!");
-	}	
-	printf("\nYou took %u turns", game.number_of_guesses);
+	}
+	if (game.number_of_guesses == 1) {
+		plural = '!';
+	} else {
+		plural = 's';
+	}
+	printf("\nYou took %u turn%c", game.number_of_guesses, plural);
 	print_answer(*(game.answer));
 	return;
 }
